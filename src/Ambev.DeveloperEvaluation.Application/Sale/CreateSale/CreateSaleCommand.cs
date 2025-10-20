@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Models;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
@@ -18,7 +19,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
     /// <see cref="CreateSaleValidator"/>, which uses <see cref="FluentValidation.AbstractValidator{T}"/>
     /// to ensure that the fields are properly populated and follow the defined business rules.
     /// </remarks>
-    public class CreateSaleCommand : IRequest<CreateSaleResult>
+    public class CreateSaleCommand : IRequest<OperationResult<Domain.Entities.Sale>>
     {
         /// <summary>
         /// Gets or sets the number of sale.
@@ -34,7 +35,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
         /// Gets or sets the branch or store where the sale was performed.
         /// </summary>
         public string Branch { get; set; } = string.Empty;
-      
+
         /// <summary>
         /// Gets or sets the total amount of sale.
         /// </summary>
@@ -43,30 +44,13 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
         /// <summary>
         /// Gets or sets the status of sale.
         /// </summary>
-        public bool Cancelled{ get; set; }
+        public bool Cancelled { get; set; }
 
         /// <summary>
         /// Gets or sets the list of items sold in this sale.
         /// </summary>
         public List<CreateSaleItemDto> Items { get; set; } = new();
-
-        /// <summary>
-        /// Validates the command using FluentValidation.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="ValidationResultDetail"/> object containing
-        /// validation status and potential errors found in the command.
-        /// </returns>
-        public ValidationResultDetail Validate()
-        {
-            var validator = new CreateSaleValidator();
-            var result = validator.Validate(this);
-            return new ValidationResultDetail
-            {
-                IsValid = result.IsValid,
-                Errors = result.Errors.Select(e => (ValidationErrorDetail)e)
-            };
-        }
+    
     }
 
     /// <summary>
@@ -92,5 +76,16 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
         /// Gets or sets the price of a single unit of the product.
         /// </summary>
         public decimal UnitPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total price of a single unit of the product.
+        /// </summary>
+        public decimal Total { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the status os Item.
+        /// </summary>
+        public bool Canceled{ get; set; }
     }
 }

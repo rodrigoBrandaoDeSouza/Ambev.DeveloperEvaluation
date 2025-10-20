@@ -13,22 +13,9 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.UpdateSale
     {
         public UpdateSaleProfile()
         {
-            CreateMap<UpdateSaleCommand, Domain.Entities.Sale>()
-                .ForMember(dest => dest.TotalAmount, opt => opt.Ignore())
-                .ForMember(dest => dest.Cancelled, opt => opt.Ignore())
-                .ForMember(dest => dest.SaleNumber, opt => opt.Ignore())
-                .ForMember(dest => dest.Date, opt => opt.Ignore())
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+            CreateMap<UpdateSaleCommand, Domain.Entities.Sale>();
 
-            CreateMap<UpdateSaleItemDto, SaleItem>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.SaleId, opt => opt.Ignore())
-                .ForMember(dest => dest.DiscountPercent, opt => opt.Ignore())
-                .ForMember(dest => dest.TotalPrice, opt => opt.Ignore())
-                .ForMember(dest => dest.Cancelled, opt => opt.Ignore());
-
-            CreateMap<Domain.Entities.Sale, UpdateSaleResult>();
-            CreateMap<SaleItem, UpdateSaleItemResult>();
+            CreateMap<UpdateSaleItemDto, SaleItem>();
         }
     }
 }

@@ -43,20 +43,10 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
         {
             return await _context.Sales
                 .Include(s => s.Items)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
         }
 
-        /// <summary>
-        /// Retrieves all sales in the database
-        /// </summary>
-        /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>A collection of sales</returns>
-        public async Task<IEnumerable<Sale>> GetAllAsync(CancellationToken cancellationToken = default)
-        {
-            return await _context.Sales
-                .Include(s => s.Items)
-                .ToListAsync(cancellationToken);
-        }
 
         /// <summary>
         /// Updates an existing sale in the database
@@ -86,6 +76,36 @@ namespace Ambev.DeveloperEvaluation.ORM.Repositories
             _context.Sales.Remove(sale);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        /// <summary>
+        /// Retrieves a paginated list of sales
+        /// </summary>
+        /// <param name="page">The number of pagination page</param>
+        /// <param name="pageSize">The size of pagination page</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        /// <returns>The list of sales if found, empty list otherwise</returns>
+        public async Task<IEnumerable<Sale>> FetchSales(int page, int pageSize, CancellationToken cancellationToken = default)
+        {
+            if (page < 1)
+            {
+                page = 1;
+            }
+
+            if (pageSize < 1)
+            {
+                pageSize = 10;
+            }
+
+            int skip = (page - 1) * pageSize;
+
+            return await _context.Sales
+                .Include(s => s.Items)
+                .AsNoTracking()
+                .OrderByDescending(s => s.Date)
+                .Skip(skip)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
         }
     }
 }

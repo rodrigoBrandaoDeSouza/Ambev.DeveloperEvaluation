@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Models;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
@@ -9,12 +10,12 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.GetSale
     /// <remarks>
     /// This command is used to request the details of a specific sale.
     /// It implements <see cref="IRequest{TResponse}"/> to return a 
-    /// <see cref="GetSaleByIdResponse"/> when executed.
+    /// <see cref=" OperationResult<Domain.Entities.Sale>"/> when executed.
     /// 
     /// The data is validated using the <see cref="GetSaleByIdValidator"/>,
     /// ensuring that a valid sale identifier is provided.
     /// </remarks>
-    public class GetSaleByIdCommand : IRequest<GetSaleByIdResponse>
+    public class GetSaleByIdCommand : IRequest<OperationResult<Domain.Entities.Sale>>
     {
         /// <summary>
         /// Gets or sets the unique identifier of the sale to retrieve.

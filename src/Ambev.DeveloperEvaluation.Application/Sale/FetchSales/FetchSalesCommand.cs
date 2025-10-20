@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Models;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.FetchSales
@@ -16,8 +17,18 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.FetchSales
     /// 
     /// Validation is performed by <see cref="FetchSalesValidator"/>.
     /// </remarks>
-    public class FetchSalesCommand : IRequest<FetchSalesResponse>
+    public class FetchSalesCommand : IRequest<OperationResult<List<Domain.Entities.Sale>>>
     {
+        /// <summary>
+        /// Gets or sets the number of page.
+        /// </summary>
+        public int Page { get; set; }
+
+        /// <summary>
+        /// Gets or sets the size of page.
+        /// </summary>
+        public int PageSize { get; set; }
+
         /// <summary>
         /// Validates the command using FluentValidation.
         /// </summary>
