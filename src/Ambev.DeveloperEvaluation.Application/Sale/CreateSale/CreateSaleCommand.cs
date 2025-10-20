@@ -35,7 +35,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
         /// Gets or sets the branch or store where the sale was performed.
         /// </summary>
         public string Branch { get; set; } = string.Empty;
-      
+
         /// <summary>
         /// Gets or sets the total amount of sale.
         /// </summary>
@@ -44,30 +44,13 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
         /// <summary>
         /// Gets or sets the status of sale.
         /// </summary>
-        public bool Cancelled{ get; set; }
+        public bool Cancelled { get; set; }
 
         /// <summary>
         /// Gets or sets the list of items sold in this sale.
         /// </summary>
         public List<CreateSaleItemDto> Items { get; set; } = new();
-
-        /// <summary>
-        /// Validates the command using FluentValidation.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="ValidationResultDetail"/> object containing
-        /// validation status and potential errors found in the command.
-        /// </returns>
-        public ValidationResultDetail Validate()
-        {
-            var validator = new CreateSaleValidator();
-            var result = validator.Validate(this);
-            return new ValidationResultDetail
-            {
-                IsValid = result.IsValid,
-                Errors = result.Errors.Select(e => (ValidationErrorDetail)e)
-            };
-        }
+    
     }
 
     /// <summary>
