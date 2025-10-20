@@ -46,6 +46,6 @@ namespace Ambev.DeveloperEvaluation.Domain.Services
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>A collection of sales.</returns>
-        Task<IEnumerable<Sale>> FetchAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Sale>> FetchAsync(int page, int pageSize, CancellationToken cancellationToken = default);
     }
 }

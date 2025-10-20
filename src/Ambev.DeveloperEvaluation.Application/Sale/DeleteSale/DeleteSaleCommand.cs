@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Models;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.DeleteSale
@@ -14,7 +15,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.DeleteSale
     /// Validation of this command is handled by <see cref="DeleteSaleValidator"/>,
     /// which ensures that the provided data is valid before deletion occurs.
     /// </remarks>
-    public class DeleteSaleCommand : IRequest<DeleteSaleResponse>
+    public class DeleteSaleCommand : IRequest<OperationResult<Domain.Entities.Sale>>
     {
         /// <summary>
         /// Gets or sets the unique identifier of the sale to be deleted.

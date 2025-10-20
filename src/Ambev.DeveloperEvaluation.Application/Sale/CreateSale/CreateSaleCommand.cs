@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Models;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
@@ -18,7 +19,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
     /// <see cref="CreateSaleValidator"/>, which uses <see cref="FluentValidation.AbstractValidator{T}"/>
     /// to ensure that the fields are properly populated and follow the defined business rules.
     /// </remarks>
-    public class CreateSaleCommand : IRequest<CreateSaleResult>
+    public class CreateSaleCommand : IRequest<OperationResult<Domain.Entities.Sale>>
     {
         /// <summary>
         /// Gets or sets the number of sale.
@@ -92,5 +93,16 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.CreateSale
         /// Gets or sets the price of a single unit of the product.
         /// </summary>
         public decimal UnitPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets the total price of a single unit of the product.
+        /// </summary>
+        public decimal Total { get; set; }
+
+
+        /// <summary>
+        /// Gets or sets the status os Item.
+        /// </summary>
+        public bool Canceled{ get; set; }
     }
 }

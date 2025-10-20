@@ -1,10 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Common.Validation;
+﻿using Ambev.DeveloperEvaluation.Application.Models;
+using Ambev.DeveloperEvaluation.Common.Validation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Application.Sale.UpdateSale
 {
@@ -16,12 +12,12 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.UpdateSale
     /// including customer data, branch, and sale items.
     /// 
     /// It implements <see cref="IRequest{TResponse}"/> to initiate a request 
-    /// that returns a <see cref="UpdateSaleResult"/> upon completion.
+    /// that returns a <see cref="OperationResult<Domain.Entities.Sale>"/> upon completion.
     /// 
     /// Validation is handled by <see cref="UpdateSaleValidator"/>,
     /// ensuring that the data provided is valid before the update operation.
     /// </remarks>
-    public class UpdateSaleCommand : IRequest<UpdateSaleResult>
+    public class UpdateSaleCommand : IRequest<OperationResult<Domain.Entities.Sale>>
     {
         /// <summary>
         /// Gets or sets the number of sale.
@@ -79,5 +75,8 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.UpdateSale
         public string ProductName { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
+        public decimal Total { get; set; }
+        public bool Cancelled { get; set; }
+
     }
 }

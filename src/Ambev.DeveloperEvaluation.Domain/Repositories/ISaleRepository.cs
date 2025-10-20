@@ -28,7 +28,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Repositories
         /// </summary>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>A collection of sales</returns>
-        Task<IEnumerable<Sale>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<IEnumerable<Sale>> FetchSales(int page, int pageSize, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates an existing sale in the repository
