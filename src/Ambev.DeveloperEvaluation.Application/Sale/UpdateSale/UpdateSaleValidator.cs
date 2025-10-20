@@ -40,6 +40,22 @@ namespace Ambev.DeveloperEvaluation.Application.Sale.UpdateSale
                 item.RuleFor(i => i.UnitPrice)
                     .GreaterThan(0).WithMessage("Unit price must be greater than zero.");
             });
+
+            RuleFor(x => x)
+                .Custom((command, context) =>
+                    {
+                        var grouped = command.Items
+                            .GroupBy(i => i.ProductName.ToLower().Trim())
+                            .Select(g => new { Product = g.Key, TotalQuantity = g.Sum(i => i.Quantity) });
+
+                        foreach (var group in grouped)
+                        {
+                            if (group.TotalQuantity > 20)
+                            {
+                                context.AddFailure($"The product '{group.Product}' exceeds the maximum allowed quantity of 20 units.");
+                            }
+                        }
+                    });
         }
     }
 }
