@@ -1,10 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Ambev.DeveloperEvaluation.Messaging.Config
 {
     /// <summary>
     /// Centralized configuration class for Rebus setup and dependency injection.
     /// </summary>
+    /// 
+
+    [ExcludeFromCodeCoverage]
     public static class MessagingConfiguration
     {
         /// <summary>

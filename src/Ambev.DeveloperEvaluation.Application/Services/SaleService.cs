@@ -1,9 +1,7 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Services;
 using Ambev.DeveloperEvaluation.Messaging.Events;
 using Ambev.DeveloperEvaluation.Messaging.Interfaces;
-using MediatR;
 
 namespace Ambev.DeveloperEvaluation.Application.Services
 {
@@ -77,11 +75,6 @@ namespace Ambev.DeveloperEvaluation.Application.Services
 
         public async Task<Domain.Entities.Sale> UpdateAsync(Domain.Entities.Sale sale, CancellationToken cancellationToken = default)
         {
-            var existingSale = await _repository.GetByIdAsync(sale.Id);
-
-            if(existingSale is null)
-                throw new KeyNotFoundException($"Sale with ID {sale.Id} not found");
-
             ApplyDiscountRules(sale);
 
             var updated = await _repository.UpdateAsync(sale, cancellationToken);
@@ -106,25 +99,37 @@ namespace Ambev.DeveloperEvaluation.Application.Services
 
         private void ApplyDiscountRules(Domain.Entities.Sale sale)
         {
-            var grouped = sale.Items
-                .GroupBy(i => i.ProductName.ToLower().Trim());
-
-            foreach (var group in grouped)
+            if (sale.Items.Sum(x=> x.Quantity) < 4)
             {
-                var totalQuantity = group.Sum(i => i.Quantity);
-
-                decimal discountPercent = 0;
-                if (totalQuantity >= 4 && totalQuantity < 10)
-                    discountPercent = 10;
-                else if (totalQuantity >= 10 && totalQuantity <= 20)
-                    discountPercent = 20;
-
-                foreach (var item in group)
+                foreach (var item in sale.Items)
                 {
-                    item.DiscountPercent = discountPercent;
+                    item.DiscountPercent = 0;
+                    item.TotalPrice = item.Quantity * item.UnitPrice;
+                }
+            }
 
-                    var discountFactor = (100 - discountPercent) / 100m;
-                    item.TotalPrice = item.UnitPrice * item.Quantity * discountFactor;
+            else
+            {
+                var grouped = sale.Items
+                        .GroupBy(i => i.ProductName.ToLower().Trim());
+
+                foreach (var group in grouped)
+                {
+                    var totalQuantity = group.Sum(i => i.Quantity);
+
+                    decimal discountPercent = 0;
+                    if (totalQuantity >= 4 && totalQuantity < 10)
+                        discountPercent = 10;
+                    else if (totalQuantity >= 10 && totalQuantity <= 20)
+                        discountPercent = 20;
+
+                    foreach (var item in group)
+                    {
+                        item.DiscountPercent = discountPercent;
+
+                        var discountFactor = (100 - discountPercent) / 100m;
+                        item.TotalPrice = item.UnitPrice * item.Quantity * discountFactor;
+                    }
                 }
             }
 
